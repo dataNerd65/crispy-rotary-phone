@@ -81,7 +81,7 @@ public class Main extends Application{
 
         //creating a HBox to hold the MenuButtons
         HBox formattingMenu = new HBox();
-        formattingMenu.getChildren().addAll(fontMenuButton, textStyleMenuButton, textStyleMenuButton, lineSpacingMenuButton, numberingMenuButton);
+        formattingMenu.getChildren().addAll(fontMenuButton, textStyleMenuButton, lineSpacingMenuButton, numberingMenuButton);
 
         //creating a popup for the formatting menu
         Popup formattingPopup = new Popup();
@@ -89,9 +89,15 @@ public class Main extends Application{
         //Adding HBox to the popup
         formattingPopup.getContent().add(formattingMenu);
 
+        //Addind Menu to MenuBar for format
+        menuBar.getMenus().add(formatMenu);
+
         //Setting the action for the format menu item
         formatMenu.setOnAction(e -> {
             //Show the pop up below menu bar
+            System.out.println("Format menu item clicked");
+            System.out.println("Menubar height: " + menuBar.getHeight());
+            formattingPopup.show(menuBar, 0, menuBar.getHeight());
         });
 
 
