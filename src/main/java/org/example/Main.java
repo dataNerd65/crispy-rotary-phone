@@ -14,6 +14,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.MenuButton;
+import javafx.stage.Popup;
+import javafx.geometry.Side;
+import javafx.scene.layout.HBox;
 
 public class Main extends Application{
 
@@ -31,6 +35,9 @@ public class Main extends Application{
         //Menu for edit ops
         Menu editMenu = new Menu("Edit");
 
+        //Menu for format ops
+        Menu formatMenu = new Menu("Format");
+
         //creating menuItems for file operations
         MenuItem newMenuItem = new MenuItem("New");
         MenuItem openMenuItem = new MenuItem("Open");
@@ -42,6 +49,51 @@ public class Main extends Application{
         MenuItem pasteMenuItem = new MenuItem("Paste");
         MenuItem cutMenuItem = new MenuItem("Cut");
         MenuItem selectAllMenuItem = new MenuItem("Select All");
+
+        //Creating MenuButtons for each category of formatting operations
+        MenuButton fontMenuButton = new MenuButton("Font");
+        MenuButton textStyleMenuButton = new MenuButton("Style");
+        MenuButton lineSpacingMenuButton = new MenuButton("LineSpacing");
+        MenuButton numberingMenuButton = new MenuButton("Numbering");
+
+        // Creating MenuItems for each operation in the font category
+        MenuItem fontStyleMenuItem = new MenuItem("FontStyle");
+        MenuItem fontSizeMenuItem = new MenuItem("FontSize");
+        MenuItem fontColorMenuItem = new MenuItem("FontColor");
+
+        //Adding MenuItems to the Font MenuButton
+        fontMenuButton.getItems().addAll(fontStyleMenuItem, fontSizeMenuItem, fontColorMenuItem);
+
+        //Creating MenuItems for each operation in the Text Style category
+        MenuItem boldMenuItem = new MenuItem("Bold");
+        MenuItem italicMenuItem = new MenuItem("Italic");
+        MenuItem underlineMenuItem = new MenuItem("Underline");
+
+        //Adding MenuItems to the Text Style MenuButton
+        textStyleMenuButton.getItems().addAll(boldMenuItem, italicMenuItem, underlineMenuItem);
+
+        //Creating MenuItems for each operation in the numbering category
+        MenuItem bulletPointsMenuItem = new MenuItem("Bullets");
+        MenuItem numberedListMenuItem = new MenuItem("Numbering");
+
+        //Adding menuItems to the Numbering MenuButton
+        numberingMenuButton.getItems().addAll(bulletPointsMenuItem, numberedListMenuItem);
+
+        //creating a HBox to hold the MenuButtons
+        HBox formattingMenu = new HBox();
+        formattingMenu.getChildren().addAll(fontMenuButton, textStyleMenuButton, textStyleMenuButton, lineSpacingMenuButton, numberingMenuButton);
+
+        //creating a popup for the formatting menu
+        Popup formattingPopup = new Popup();
+
+        //Adding HBox to the popup
+        formattingPopup.getContent().add(formattingMenu);
+
+        //Setting the action for the format menu item
+        formatMenu.setOnAction(e -> {
+            //Show the pop up below menu bar
+        });
+
 
 
         //Adding MenuItems to fileMenu
