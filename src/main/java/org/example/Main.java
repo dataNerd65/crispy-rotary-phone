@@ -7,14 +7,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.MenuButton;
 import javafx.stage.Popup;
 import javafx.geometry.Side;
 import javafx.scene.layout.HBox;
@@ -86,21 +82,26 @@ public class Main extends Application{
         //creating a popup for the formatting menu
         Popup formattingPopup = new Popup();
 
+        //Setting autohide to true
+        formattingPopup.setAutoHide(true);
+
         //Adding HBox to the popup
         formattingPopup.getContent().add(formattingMenu);
 
-        //Addind Menu to MenuBar for format
-        menuBar.getMenus().add(formatMenu);
+        //realized that one cannot set the action for the format menu but do it on a menu item
+
+        //Creating a menu item for the format menu
+        MenuItem formatMenuItem = new MenuItem("Format Options");
 
         //Setting the action for the format menu item
-        formatMenu.setOnAction(e -> {
+        formatMenuItem.setOnAction(e -> {
             //Show the pop up below menu bar
             System.out.println("Format menu item clicked");
             System.out.println("Menubar height: " + menuBar.getHeight());
-            formattingPopup.show(menuBar, 0, menuBar.getHeight());
+            formattingPopup.show(menuBar.getScene().getWindow(),
+                                 menuBar.localToScreen(menuBar.getBoundsInLocal()).getMinX(),
+                                 menuBar.localToScreen(menuBar.getBoundsInLocal()).getMaxY());
         });
-
-
 
         //Adding MenuItems to fileMenu
         fileMenu.getItems().addAll(newMenuItem, openMenuItem, saveMenuItem, printMenuItem);
@@ -114,6 +115,9 @@ public class Main extends Application{
         //Adding Menu to MenuBar for edit
         menuBar.getMenus().add(editMenu);
 
+        //Adding Menu to MenuBar for format
+        menuBar.getMenus().add(formatMenu);
+
         //Creating a BorderPane with the MenuBar at the top
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(menuBar);
@@ -125,7 +129,7 @@ public class Main extends Application{
         //Menu for edit operations(copy paste, cut, select all)
 
         //Menu for format operations (change font)
-
+        formatMenu.getItems().add(formatMenuItem);
 
         Scene scene = new Scene(borderPane, 800, 600);
         stage.setScene(scene);
