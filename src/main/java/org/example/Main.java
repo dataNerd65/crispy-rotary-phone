@@ -23,27 +23,45 @@ public class Main extends Application{
     public void start(Stage stage) {
        textArea = new TextArea();
         //Menu for file operations (new, open, save, print)
-        //Creating MenuBar
+        //Creating MenuBar to hold all your menus
         MenuBar menuBar = new MenuBar();
-        //creating menu
+        //creating menu for file operations
         Menu fileMenu = new Menu("File");
 
-        //creating menuItems
+        //Menu for edit ops
+        Menu editMenu = new Menu("Edit");
+
+        //creating menuItems for file operations
         MenuItem newMenuItem = new MenuItem("New");
         MenuItem openMenuItem = new MenuItem("Open");
         MenuItem saveMenuItem = new MenuItem("Save");
         MenuItem printMenuItem = new MenuItem("Print");
 
-        //Adding MenuItems to Menu
+        //creating menuItems for editMenu
+        MenuItem copyMenuItem = new MenuItem("Copy");
+        MenuItem pasteMenuItem = new MenuItem("Paste");
+        MenuItem cutMenuItem = new MenuItem("Cut");
+        MenuItem selectAllMenuItem = new MenuItem("Select All");
+
+
+        //Adding MenuItems to fileMenu
         fileMenu.getItems().addAll(newMenuItem, openMenuItem, saveMenuItem, printMenuItem);
 
-        //Adding Menu to MenuBar
+        //Adding MenuItems to editMenu
+        editMenu.getItems().addAll(copyMenuItem, pasteMenuItem, cutMenuItem, selectAllMenuItem);
+
+        //Adding Menu to MenuBar for file ops
         menuBar.getMenus().add(fileMenu);
+
+        //Adding Menu to MenuBar for edit
+        menuBar.getMenus().add(editMenu);
 
         //Creating a BorderPane with the MenuBar at the top
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(menuBar);
         borderPane.setCenter(textArea);
+
+        //
 
 
         //Menu for edit operations(copy paste, cut, select all)
