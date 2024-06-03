@@ -42,7 +42,7 @@ public class Main extends Application{
         newMenuItem.setOnAction(new Actions.NewMenuItemClickHandler());
 
         MenuItem openMenuItem = new MenuItem("Open");
-        openMenuItem.setOnAction(new Actions.OpenMenuItemClickHandler());
+        openMenuItem.setOnAction(new Actions.OpenMenuItemClickHandler(textArea));
 
         MenuItem saveMenuItem = new MenuItem("Save");
         saveMenuItem.setOnAction(new Actions.SaveMenuItemClicker());
