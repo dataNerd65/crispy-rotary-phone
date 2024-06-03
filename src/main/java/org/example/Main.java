@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.Popup;
 //import javafx.geometry.Side;
 import javafx.scene.layout.HBox;
+import javafx.scene.input.KeyCombination;
 
 public class Main extends Application{
 
@@ -45,7 +46,8 @@ public class Main extends Application{
         openMenuItem.setOnAction(new Actions.OpenMenuItemClickHandler(textArea));
 
         MenuItem saveMenuItem = new MenuItem("Save");
-        saveMenuItem.setOnAction(new Actions.SaveMenuItemClicker());
+        saveMenuItem.setOnAction(new Actions.SaveMenuItemClicker(textArea));
+        saveMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
 
         MenuItem printMenuItem = new MenuItem("Print");
         printMenuItem.setOnAction(new Actions.PrintMenuItemClicker());
