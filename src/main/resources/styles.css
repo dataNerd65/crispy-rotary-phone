@@ -1,0 +1,4 @@
+.text-area {
+    -fx-background-image: url('img.png');
+    -fx-background-repeat: repeat-y;
+  }
