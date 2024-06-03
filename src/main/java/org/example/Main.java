@@ -21,7 +21,9 @@ public class Main extends Application{
 
     @Override
     public void start(Stage stage) {
-       textArea = new TextArea();
+        textArea = new TextArea();
+        //Trying css referencing
+        textArea.getStyleClass().add("text-area");
         //Menu for file operations (new, open, save, print)
         //Creating MenuBar to hold all your menus
         MenuBar menuBar = new MenuBar();
@@ -82,7 +84,7 @@ public class Main extends Application{
         //creating a popup for the formatting menu
         Popup formattingPopup = new Popup();
 
-        //Setting autohide to true
+        //Setting auto hide to true
         formattingPopup.setAutoHide(true);
 
         //Adding HBox to the popup
@@ -123,19 +125,18 @@ public class Main extends Application{
         borderPane.setTop(menuBar);
         borderPane.setCenter(textArea);
 
-        //
-
-
         //Menu for edit operations(copy paste, cut, select all)
 
         //Menu for format operations (change font)
         formatMenu.getItems().add(formatMenuItem);
 
         Scene scene = new Scene(borderPane, 800, 600);
+        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
-
-
+        System.out.println(System.getProperty("java.class.path"));
+        System.out.println(scene.getStylesheets());
+        System.out.println(textArea.getStyleClass());
 
     }
     public static void main(String args[]){
