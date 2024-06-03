@@ -37,14 +37,18 @@ public class Main extends Application{
         Menu formatMenu = new Menu("Format");
 
         //creating menuItems for file operations and their onclick events
+        //Also instantiating the class Actions.java with its static classes that handle the respective actions
         MenuItem newMenuItem = new MenuItem("New");
-        newMenuItem.setOnAction(new HEvents());
+        newMenuItem.setOnAction(new Actions.NewMenuItemClickHandler());
 
         MenuItem openMenuItem = new MenuItem("Open");
-        openMenuItem.setOnAction(new HEvents());
+        openMenuItem.setOnAction(new Actions.OpenMenuItemClickHandler());
 
         MenuItem saveMenuItem = new MenuItem("Save");
+        saveMenuItem.setOnAction(new Actions.SaveMenuItemClicker());
+
         MenuItem printMenuItem = new MenuItem("Print");
+        printMenuItem.setOnAction(new Actions.PrintMenuItemClicker());
 
         //creating menuItems for editMenu
         MenuItem copyMenuItem = new MenuItem("Copy");
