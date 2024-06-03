@@ -15,10 +15,19 @@ import javafx.scene.control.Alert.AlertType;
 public class Actions {
     //making static classes
     public static class NewMenuItemClickHandler implements EventHandler<ActionEvent>{
+        private TextArea textArea;
+        private Actions.SaveMenuItemClicker saveMenuItemClicker;
+
+        public NewMenuItemClickHandler(TextArea textArea, Actions.SaveMenuItemClicker saveMenuItemClicker){
+            this.textArea = textArea;
+            this.saveMenuItemClicker = saveMenuItemClicker;
+        }
         @Override
         public void handle(ActionEvent event){
             //for the start just printing
             System.out.println("New Menu Item Clicked!");
+            saveMenuItemClicker.handle(event);
+            textArea.setText("");
         }
 
     }
