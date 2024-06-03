@@ -10,9 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+//import javafx.stage.StageStyle;
 import javafx.stage.Popup;
-import javafx.geometry.Side;
+//import javafx.geometry.Side;
 import javafx.scene.layout.HBox;
 
 public class Main extends Application{
@@ -36,9 +36,13 @@ public class Main extends Application{
         //Menu for format ops
         Menu formatMenu = new Menu("Format");
 
-        //creating menuItems for file operations
+        //creating menuItems for file operations and their onclick events
         MenuItem newMenuItem = new MenuItem("New");
+        newMenuItem.setOnAction(new HEvents());
+
         MenuItem openMenuItem = new MenuItem("Open");
+        openMenuItem.setOnAction(new HEvents());
+
         MenuItem saveMenuItem = new MenuItem("Save");
         MenuItem printMenuItem = new MenuItem("Print");
 
