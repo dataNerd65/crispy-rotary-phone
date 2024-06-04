@@ -79,7 +79,15 @@ public class Actions {
                         //if the current file does not exist, call the handle method of savaMenuItemClicker
                         saveMenuItemClicker.handle(event);
                         currentFile = saveMenuItemClicker.getCurrentFile();
-                        isModified = false;
+                        if (currentFile != null && currentFile.exists()){
+                            try{
+                                Files.write(Paths.get(currentFile.toURI()), textArea.getText().getBytes());
+                                isModified = false;
+                            } catch(Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+
                     }
                 } else if(result.get() == buttonTypeDiscard){
                     isModified = false;
