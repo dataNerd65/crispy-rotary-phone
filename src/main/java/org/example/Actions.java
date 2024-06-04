@@ -2,6 +2,7 @@ package org.example;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 //import javafx.scene.control.MenuItem;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
@@ -47,27 +48,39 @@ public class Actions {
         @Override
         public void handle(ActionEvent event) {
             if (isModified){
-                if (currentFile != null && currentFile.exists()) {
-                    try {
-                        Files.write(Paths.get(currentFile.toURI()), textArea.getText().getBytes());
-                        isModified = false;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Alert alert = new Alert(AlertType.CONFIRMATION);
-                    alert.setTitle("Confirmation Dialog");
-                    alert.setHeaderText("You have unsaved changes");
-                    alert.setContentText("Do you want to save your changes?");
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.OK) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Dialog");
+                alert.setHeaderText("You have unsaved changes!");
+                alert.setContentText("Do you want to save your changes?");
+
+                ButtonType buttonTypeSave = new ButtonType("Save");
+                ButtonType buttonTypeDiscard = new ButtonType("Discard");
+                ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDiscard, buttonTypeCancel);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonTypeSave){
+                    if(currentFile != null && currentFile.exists()){
+                        try{
+                            Files.write(Paths.get(currentFile.toURI()), textArea.getText().getBytes());
+                            isModified = false;
+                        } catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    } else {
                         saveMenuItemClicker.handle(event);
                         currentFile = saveMenuItemClicker.getCurrentFile();
                         isModified = false;
-
                     }
+                } else if(result.get() == buttonTypeDiscard){
+                    isModified = false;
+                }else {
+                    //User chooses cancel or closes the dialog
+                    return;
                 }
             }
+
             textArea.setText("");
         }
 
@@ -105,6 +118,9 @@ public class Actions {
 
         public SaveMenuItemClicker(TextArea textArea, NewMenuItemClickHandler newMenuItemClickHandler){
             this.textArea = textArea;
+            this.newMenuItemClickHandler = newMenuItemClickHandler;
+        }
+        public void setNewMenuItemClickHandler(NewMenuItemClickHandler newMenuItemClickHandler){
             this.newMenuItemClickHandler = newMenuItemClickHandler;
         }
 
