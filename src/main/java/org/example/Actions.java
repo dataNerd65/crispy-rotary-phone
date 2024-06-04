@@ -48,20 +48,27 @@ public class Actions {
         @Override
         public void handle(ActionEvent event) {
             if (isModified){
+                // Create a new Alert dialog
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation Dialog");
                 alert.setHeaderText("You have unsaved changes!");
                 alert.setContentText("Do you want to save your changes?");
 
+                //creating buttons for the dialog
                 ButtonType buttonTypeSave = new ButtonType("Save");
                 ButtonType buttonTypeDiscard = new ButtonType("Discard");
                 ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
+                //setting the buttons on the dialog
                 alert.getButtonTypes().setAll(buttonTypeSave, buttonTypeDiscard, buttonTypeCancel);
 
+                //show dialog and wait for users request
                 Optional<ButtonType> result = alert.showAndWait();
+
+                //if user chooses to save
                 if (result.get() == buttonTypeSave){
                     if(currentFile != null && currentFile.exists()){
+                        //if the current file exists, write the changes directly to the file
                         try{
                             Files.write(Paths.get(currentFile.toURI()), textArea.getText().getBytes());
                             isModified = false;
@@ -69,6 +76,7 @@ public class Actions {
                             e.printStackTrace();
                         }
                     } else {
+                        //if the current file does not exist, call the handle method of savaMenuItemClicker
                         saveMenuItemClicker.handle(event);
                         currentFile = saveMenuItemClicker.getCurrentFile();
                         isModified = false;
