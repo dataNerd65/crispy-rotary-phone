@@ -14,6 +14,8 @@ import java.nio.file.Path;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import java.util.Optional;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class Actions {
     //making static classes
@@ -21,17 +23,34 @@ public class Actions {
         private TextArea textArea;
         private SaveMenuItemClicker saveMenuItemClicker;
         private File currentFile;
+        private boolean isModified;
 
         public NewMenuItemClickHandler(TextArea textArea, SaveMenuItemClicker saveMenuItemClicker){
             this.textArea = textArea;
             this.saveMenuItemClicker = saveMenuItemClicker;
+            this.isModified = false;
+
+            //Adding a ChangeListener to the TextArea's text property
+            this.textArea.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+                    if (!newValue.isEmpty()){
+                        isModified = true;
+                    }
+
+                }
+            });
+        }
+        public void setModified(boolean isModified){
+            this.isModified = isModified;
         }
         @Override
         public void handle(ActionEvent event) {
-            if (!textArea.getText().isEmpty()) {
+            if (isModified){
                 if (currentFile != null && currentFile.exists()) {
                     try {
                         Files.write(Paths.get(currentFile.toURI()), textArea.getText().getBytes());
+                        isModified = false;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -42,23 +61,24 @@ public class Actions {
                     alert.setContentText("Do you want to save your changes?");
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == ButtonType.OK) {
-                       saveMenuItemClicker.handle(event);
-                       currentFile = saveMenuItemClicker.getCurrentFile();
+                        saveMenuItemClicker.handle(event);
+                        currentFile = saveMenuItemClicker.getCurrentFile();
+                        isModified = false;
 
+                    }
                 }
             }
-        }
-            //for the start just printing
-            System.out.println("New Menu Item Clicked!");
             textArea.setText("");
         }
 
     }
+
     public static class OpenMenuItemClickHandler implements EventHandler<ActionEvent>{
         private TextArea textArea;
         
         public OpenMenuItemClickHandler(TextArea textArea) {
             this.textArea = textArea;
+
         }
         @Override
         public void handle(ActionEvent event){
@@ -81,9 +101,11 @@ public class Actions {
     public static  class SaveMenuItemClicker implements EventHandler<ActionEvent>{
         private TextArea textArea;
         private File currentFile;
+        private NewMenuItemClickHandler newMenuItemClickHandler;
 
-        public SaveMenuItemClicker(TextArea textArea){
+        public SaveMenuItemClicker(TextArea textArea, NewMenuItemClickHandler newMenuItemClickHandler){
             this.textArea = textArea;
+            this.newMenuItemClickHandler = newMenuItemClickHandler;
         }
 
         @Override
@@ -106,6 +128,7 @@ public class Actions {
                 try{
                     Files.write(Paths.get(file.toURI()), textArea.getText().getBytes());
                     currentFile = file;
+                    newMenuItemClickHandler.setModified(false);
                 } catch(Exception e){
                     e.printStackTrace();
                 }

@@ -40,16 +40,22 @@ public class Main extends Application{
         //creating menuItems for file operations and their onclick events
         //Also instantiating the class Actions.java with its static classes that handle the respective actions
 
-        Actions.SaveMenuItemClicker saveMenuItemClicker = new Actions.SaveMenuItemClicker(textArea);
-        MenuItem newMenuItem = new MenuItem("New");
+        Actions.NewMenuItemClickHandler newMenuItemClickHandler = new Actions.NewMenuItemClickHandler(textArea, null);
+        Actions.SaveMenuItemClicker saveMenuItemClicker = new Actions.SaveMenuItemClicker(textArea, newMenuItemClickHandler);
+
+
+
         //here
-        newMenuItem.setOnAction(new Actions.NewMenuItemClickHandler(textArea, saveMenuItemClicker));
+        MenuItem newMenuItem = new MenuItem("New");
+        newMenuItem.setOnAction(newMenuItemClickHandler);
 
         MenuItem openMenuItem = new MenuItem("Open");
         openMenuItem.setOnAction(new Actions.OpenMenuItemClickHandler(textArea));
 
+        //save
+
         MenuItem saveMenuItem = new MenuItem("Save");
-        saveMenuItem.setOnAction(new Actions.SaveMenuItemClicker(textArea));
+        saveMenuItem.setOnAction(saveMenuItemClicker);
         saveMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
 
         MenuItem printMenuItem = new MenuItem("Print");
