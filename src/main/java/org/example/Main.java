@@ -42,6 +42,7 @@ public class Main extends Application{
 
         Actions.SaveMenuItemClicker saveMenuItemClicker = new Actions.SaveMenuItemClicker(textArea);
         MenuItem newMenuItem = new MenuItem("New");
+        //here
         newMenuItem.setOnAction(new Actions.NewMenuItemClickHandler(textArea, saveMenuItemClicker));
 
         MenuItem openMenuItem = new MenuItem("Open");

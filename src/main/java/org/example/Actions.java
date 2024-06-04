@@ -2,6 +2,7 @@ package org.example;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 //import javafx.scene.control.MenuItem;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -9,24 +10,46 @@ import javafx.stage.Window;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import java.util.Optional;
 
 public class Actions {
     //making static classes
     public static class NewMenuItemClickHandler implements EventHandler<ActionEvent>{
         private TextArea textArea;
-        private Actions.SaveMenuItemClicker saveMenuItemClicker;
+        private SaveMenuItemClicker saveMenuItemClicker;
+        private File currentFile;
 
-        public NewMenuItemClickHandler(TextArea textArea, Actions.SaveMenuItemClicker saveMenuItemClicker){
+        public NewMenuItemClickHandler(TextArea textArea, SaveMenuItemClicker saveMenuItemClicker){
             this.textArea = textArea;
             this.saveMenuItemClicker = saveMenuItemClicker;
         }
         @Override
-        public void handle(ActionEvent event){
+        public void handle(ActionEvent event) {
+            if (!textArea.getText().isEmpty()) {
+                if (currentFile != null && currentFile.exists()) {
+                    try {
+                        Files.write(Paths.get(currentFile.toURI()), textArea.getText().getBytes());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation Dialog");
+                    alert.setHeaderText("You have unsaved changes");
+                    alert.setContentText("Do you want to save your changes?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                       saveMenuItemClicker.handle(event);
+                       currentFile = saveMenuItemClicker.getCurrentFile();
+
+                }
+            }
+        }
             //for the start just printing
             System.out.println("New Menu Item Clicked!");
-            saveMenuItemClicker.handle(event);
             textArea.setText("");
         }
 
@@ -57,6 +80,8 @@ public class Actions {
 
     public static  class SaveMenuItemClicker implements EventHandler<ActionEvent>{
         private TextArea textArea;
+        private File currentFile;
+
         public SaveMenuItemClicker(TextArea textArea){
             this.textArea = textArea;
         }
@@ -80,11 +105,17 @@ public class Actions {
             if (file != null){
                 try{
                     Files.write(Paths.get(file.toURI()), textArea.getText().getBytes());
+                    currentFile = file;
                 } catch(Exception e){
                     e.printStackTrace();
                 }
             }
+
         }
+        public File getCurrentFile(){
+            return currentFile;
+        }
+
     }
     public static class PrintMenuItemClicker implements EventHandler<ActionEvent>{
         @Override
